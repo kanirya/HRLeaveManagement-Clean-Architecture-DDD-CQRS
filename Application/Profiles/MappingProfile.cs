@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.LeaveAllocation;
 using Application.DTOs.LeaveRequest;
 using AutoMapper;
 using Domain;
@@ -17,7 +18,7 @@ namespace Application.Profiles
             CreateMap<LeaveRequest,LeaveRequestDto>().ReverseMap();
             CreateMap<LeaveRequest,LeaveRequestListDto>().ReverseMap();
             CreateMap<LeaveType,LeaveTypeDto>().ReverseMap();
-            CreateMap<LeaveAllocation,LeaveAllocationDto>().ReverseMap();
+            CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
         }
     }
 }
