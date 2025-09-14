@@ -35,7 +35,6 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
                 _mapper.Map(request.leaveRequestDto, leaveRequest);
                 await _leaveRequestRepository.Update(leaveRequest);
 
-
             }else if(request.changeLeaveRequestDto!=null)
             {
                 leaveRequest.Approved = request.changeLeaveRequestDto.Approved;
