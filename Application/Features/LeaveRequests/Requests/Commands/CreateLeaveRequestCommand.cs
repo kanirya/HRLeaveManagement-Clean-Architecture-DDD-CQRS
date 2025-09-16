@@ -11,6 +11,6 @@ namespace Application.Features.LeaveRequests.Requests.Commands
     public class CreateLeaveRequestCommand:IRequest<int>
 
     {
-        public LeaveRequestDto leaveRequest { get; set; }
+        public CreateLeaveRequestDto CreateLeaveRequestDto { get; set; }
     }
 }

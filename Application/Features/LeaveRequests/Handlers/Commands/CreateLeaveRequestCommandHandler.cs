@@ -1,7 +1,9 @@
-﻿using Application.Features.LeaveRequests.Requests.Commands;
+﻿using Application.DTOs.LeaveRequest.Validators;
+using Application.Features.LeaveRequests.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,15 +17,22 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IMapper _mapper;
-
-        public CreateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository,IMapper mapper)
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
+        public CreateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
         {
             _leaveRequestRepository=leaveRequestRepository;
             _mapper=mapper;
+            _leaveTypeRepository=leaveTypeRepository;
         }
         public  async Task<int> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
-          var leaveRequest=_mapper.Map<LeaveRequest>(request.leaveRequest);
+            var validator=new CreateLeaveRequestDtoValidator(_leaveTypeRepository);
+
+            var validationResult=await validator.ValidateAsync(request.CreateLeaveRequestDto);
+            if(validationResult != null) {
+                throw new Exception("Invalid leave request data");
+            }
+            var leaveRequest=_mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
             leaveRequest=await _leaveRequestRepository.Add(leaveRequest);
             if (leaveRequest==null)
             {

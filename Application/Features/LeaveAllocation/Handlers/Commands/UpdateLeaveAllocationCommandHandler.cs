@@ -1,4 +1,5 @@
-﻿using Application.Features.LeaveAllocation.Requests.Commands;
+﻿using Application.DTOs.LeaveAllocation.Validators;
+using Application.Features.LeaveAllocation.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
 using MediatR;
@@ -14,21 +15,26 @@ namespace Application.Features.LeaveAllocation.Handlers.Commands
     {
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly IMapper _mapper;
-
-        public UpdateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository, IMapper mapper)
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
+        public UpdateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
         {
             _leaveAllocationRepository=leaveAllocationRepository;
             _mapper=mapper;
+            _leaveTypeRepository=leaveTypeRepository;
         }
 
         public async Task<Unit> Handle(UpdateLeaveAllocationCommand request, CancellationToken cancellationToken)
         {
-            var leaveAllocation = await _leaveAllocationRepository.Get(request.LeaveAllocationDto.Id);
+            var validator = new UpdateLeaveAllocationDtoValidator(_leaveTypeRepository);
+            var validationResult = await validator.ValidateAsync(request.UpdateLeaveAllocationDto);
+            if (!validationResult.IsValid)
+                throw new Exception();
+            var leaveAllocation = await _leaveAllocationRepository.Get(request.UpdateLeaveAllocationDto.Id);
             if (leaveAllocation==null)
             {
-                throw new Exception($"Leave allocation with id {request.LeaveAllocationDto.Id} not found.");
+                throw new Exception($"Leave allocation with id {request.UpdateLeaveAllocationDto.Id} not found.");
             }
-            _mapper.Map(request.LeaveAllocationDto, leaveAllocation);
+            _mapper.Map(request.UpdateLeaveAllocationDto, leaveAllocation);
             await _leaveAllocationRepository.Update(leaveAllocation);
             return Unit.Value;
         }

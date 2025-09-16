@@ -17,7 +17,7 @@ namespace Application.DTOs.LeaveRequest.Validators
             _leaveTypeRepository=leaveTypeRepository;
 
           Include(new ILeaveRequestDtoValidator(_leaveTypeRepository));
-
+            RuleFor(x => x).NotNull().WithMessage("Leave request cannot be null");
             RuleFor(q => q.RequestComments)
                 .MaximumLength(300).WithMessage("{PropertyName} must not exceed {ComparisonValue} characters.");
           
