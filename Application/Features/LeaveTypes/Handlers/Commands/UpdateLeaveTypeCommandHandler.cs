@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.LeaveType.Validators;
+using Application.Exceptions;
 using Application.Features.LeaveTypes.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
@@ -30,7 +31,7 @@ namespace Application.Features.LeaveTypes.Handlers.Commands
             var leaveType=await _leaveTypeRepository.Get(request.LeaveTypeDto.Id);
             if (leaveType==null)
             {
-                throw new Exception($"Leave type with id {request.LeaveTypeDto.Id} not found.");
+                throw new ValidationExceptions(validationResult);
             }
             _mapper.Map(request.LeaveTypeDto,leaveType);
             await _leaveTypeRepository.Update(leaveType);

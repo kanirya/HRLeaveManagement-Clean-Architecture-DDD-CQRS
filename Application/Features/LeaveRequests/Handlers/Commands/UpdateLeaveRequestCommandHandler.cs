@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.LeaveRequest.Validators;
+using Application.Exceptions;
 using Application.Features.LeaveRequests.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
@@ -37,7 +38,7 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
                 var validator = new UpdateLeaveRequestDtoValidator(_leaveTypeRepository);
                 var validationResult = await validator.ValidateAsync(request.UpdateLeaveRequestDto);
                 if (!validationResult.IsValid)
-                    throw new Exception("Invalid leave request data.");
+                    throw new ValidationExceptions(validationResult);
                 _mapper.Map(request.UpdateLeaveRequestDto, leaveRequest);
                 await _leaveRequestRepository.Update(leaveRequest);
 

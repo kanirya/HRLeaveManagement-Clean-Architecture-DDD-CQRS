@@ -1,4 +1,5 @@
-﻿using Application.Features.LeaveAllocation.Requests.Commands;
+﻿using Application.Exceptions;
+using Application.Features.LeaveAllocation.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
 using MediatR;
@@ -26,7 +27,7 @@ namespace Application.Features.LeaveAllocation.Handlers.Commands
            var leaveAllocation=await _leaveAllocationRepository.Get(request.Id);
             if (leaveAllocation==null)
             {
-                throw new Exception($"Leave allocation with id {request.Id} not found.");
+                throw new NotFoundException(nameof(leaveAllocation),request.Id);
             }
             await _leaveAllocationRepository.Delete(leaveAllocation);
             return Unit.Value;
