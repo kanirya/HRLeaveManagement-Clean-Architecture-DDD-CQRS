@@ -2,6 +2,7 @@
 using Application.Exceptions;
 using Application.Features.LeaveRequests.Requests.Commands;
 using Application.Persistence.Contracts;
+using Application.Responses;
 using AutoMapper;
 using Domain;
 using FluentValidation;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.LeaveRequests.Handlers.Commands
 {
-    public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, int>
+    public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, BaseCommandResponse>
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IMapper _mapper;
@@ -25,21 +26,32 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
             _mapper=mapper;
             _leaveTypeRepository=leaveTypeRepository;
         }
-        public  async Task<int> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
+        public  async Task<BaseCommandResponse> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
+            var response = new BaseCommandResponse();
             var validator=new CreateLeaveRequestDtoValidator(_leaveTypeRepository);
 
             var validationResult=await validator.ValidateAsync(request.CreateLeaveRequestDto);
-            if(validationResult != null) {
-                throw new ValidationExceptions(validationResult);
+
+            if (!validationResult.IsValid) {
+                response.Success = false;
+                response.Message = "Creation Failed ";
+               response.Errors=validationResult.Errors.Select(q => q.ErrorMessage).ToList();
             }
+            
             var leaveRequest=_mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
+
             leaveRequest=await _leaveRequestRepository.Add(leaveRequest);
             if (leaveRequest==null)
             {
-                throw new Exception("Error creating leave request");
+                response.Success = false;
+                response.Message = "Creation Failed ";
             }
-                return leaveRequest.Id;
+            response.Success = true;
+            response.Message = "Creation Successful ";
+            response.Id = leaveRequest.Id;
+
+            return response;
         }
     }
 }
