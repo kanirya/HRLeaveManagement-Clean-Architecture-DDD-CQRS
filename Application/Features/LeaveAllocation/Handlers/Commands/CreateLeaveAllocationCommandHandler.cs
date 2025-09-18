@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.LeaveAllocation.Validators;
 using Application.Features.LeaveAllocation.Requests.Commands;
 using Application.Persistence.Contracts;
+using Application.Responses;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.LeaveAllocation.Handlers.Commands
 {
-    public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAllocationCommand, int>
+    public class CreateLeaveAllocationCommandHandler : IRequestHandler<CreateLeaveAllocationCommand, BaseCommandResponse>
     {
           private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly IMapper _mapper;
@@ -27,18 +28,34 @@ namespace Application.Features.LeaveAllocation.Handlers.Commands
 
             _leaveTypeRepository=leaveTypeRepository;
         }
-        public async Task<int> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
         { 
-
+            var response = new BaseCommandResponse();
             var validator = new CreateLeaveAllocationDtoValidator(_leaveTypeRepository);
 
             var validationResult = await validator.ValidateAsync(request.CreateLeaveAllocationDto);
             if(!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+            {
+                response.Success = false;
+                response.Message = "Creation Failed ";
+                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return response;
+            }
 
             var leaveAllocation = _mapper.Map<Domain.LeaveAllocation>(request.CreateLeaveAllocationDto);
             leaveAllocation = await _leaveAllocationRepository.Add(leaveAllocation);
-            return leaveAllocation.Id;
+            if(leaveAllocation==null)
+            {
+                response.Success = false;
+                response.Message = "Creation Failed ";
+                return response;
+
+
+            }
+            response.Success = true;
+            response.Message = "Creation Successful ";
+            response.Id = leaveAllocation.Id;
+            return response;
         }
     }
 }

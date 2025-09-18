@@ -37,6 +37,7 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
                 response.Success = false;
                 response.Message = "Creation Failed ";
                response.Errors=validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return response;
             }
             
             var leaveRequest=_mapper.Map<LeaveRequest>(request.CreateLeaveRequestDto);
@@ -46,6 +47,7 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
             {
                 response.Success = false;
                 response.Message = "Creation Failed ";
+                return response;
             }
             response.Success = true;
             response.Message = "Creation Successful ";
