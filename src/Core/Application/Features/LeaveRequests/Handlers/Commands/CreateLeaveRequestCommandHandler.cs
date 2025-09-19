@@ -1,6 +1,8 @@
-﻿using Application.DTOs.LeaveRequest.Validators;
+﻿using Application.Contracts.Infrastructure;
+using Application.DTOs.LeaveRequest.Validators;
 using Application.Exceptions;
 using Application.Features.LeaveRequests.Requests.Commands;
+using Application.Models;
 using Application.Persistence.Contracts;
 using Application.Responses;
 using AutoMapper;
@@ -20,11 +22,13 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IMapper _mapper;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
-        public CreateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
+        private readonly IEmailSender _emailSender;
+        public CreateLeaveRequestCommandHandler(ILeaveRequestRepository leaveRequestRepository, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, IEmailSender emailSender)
         {
             _leaveRequestRepository=leaveRequestRepository;
             _mapper=mapper;
             _leaveTypeRepository=leaveTypeRepository;
+            _emailSender=emailSender;
         }
         public  async Task<BaseCommandResponse> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
         {
@@ -53,6 +57,23 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
             response.Message = "Creation Successful ";
             response.Id = leaveRequest.Id;
 
+            var email=new Email
+            {
+                To="user@localhost",
+                Subject="Leave Request Created",
+                Body=$"Your leave request for {leaveRequest.StartDate:D} to {leaveRequest.EndDate:D} has been created successfully."
+            };
+
+
+            try
+            {
+                await _emailSender.SendEmail(email);
+
+            }
+            catch (Exception ex)
+            {
+                //log or handle error, but don't throw
+            }
             return response;
         }
     }
