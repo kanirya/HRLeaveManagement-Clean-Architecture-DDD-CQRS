@@ -18,8 +18,11 @@ namespace Persistence
         {
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-           
+                 options.UseSqlServer(
+                     configuration.GetConnectionString("DefaultConnection"),
+                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                 ));
+
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
