@@ -10,6 +10,6 @@ namespace Application.Persistence.Contracts
     public interface ILeaveTypeRepository:IGenericRepository<LeaveType>
     {
         Task<LeaveType> GetLeaveTypeWithDetails(int id);
-        Task<List<LeaveType>> GetLeaveTypesListWithDetails();
+        Task<List<LeaveType>> GetLeaveTypesListWithDetails(CancellationToken ct);
     }
 }

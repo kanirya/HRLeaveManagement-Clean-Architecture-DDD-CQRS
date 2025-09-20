@@ -23,9 +23,9 @@ namespace API.Controllers
 
         [HttpGet]
         
-        public async Task<ActionResult<List<LeaveTypeDto>>> Get()
+        public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {
-            var leaveType = await _mediator.Send(new GetLeaveTypeListRequest());
+            var leaveType = await _mediator.Send(new GetLeaveTypeListRequest(),cancellationToken);
 
             return Ok(leaveType);
           
@@ -82,5 +82,8 @@ namespace API.Controllers
             }
 
         }
+
+      
+
     }
 }

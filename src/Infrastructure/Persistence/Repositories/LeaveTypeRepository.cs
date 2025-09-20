@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Persistence.Repositories
@@ -18,9 +19,13 @@ namespace Persistence.Repositories
             _dbContext=dbContext;
         }
 
-        public async Task<List<LeaveType>> GetLeaveTypesListWithDetails()
+        public async Task<List<LeaveType>> GetLeaveTypesListWithDetails(CancellationToken ct)
         {
-          return await _dbContext.LeaveTypes.ToListAsync();
+
+            return await _dbContext.LeaveTypes
+        .FromSqlRaw("WAITFOR DELAY '00:00:05'; SELECT * FROM LeaveTypes")
+        .ToListAsync(ct);
+
         }
 
         public async Task<LeaveType> GetLeaveTypeWithDetails(int id)
