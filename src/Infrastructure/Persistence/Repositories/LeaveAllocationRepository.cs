@@ -17,7 +17,6 @@ namespace Persistence.Repositories
         {
             _dbContext=dbContext;
         }
-
         public async Task<List<LeaveAllocation>> GetLeaveAllocationsListWithDetails()
         {
             var result=await _dbContext.LeaveAllocations
