@@ -11,6 +11,6 @@ namespace Application.Features.LeaveAllocation.Requests.Commands
 {
     public class CreateLeaveAllocationCommand:IRequest<BaseCommandResponse>
     {
-        public CreateLeaveAllocationDto CreateLeaveAllocationDto { get; set; }
+        public required CreateLeaveAllocationDto CreateLeaveAllocationDto { get; set; }
     }
 }
