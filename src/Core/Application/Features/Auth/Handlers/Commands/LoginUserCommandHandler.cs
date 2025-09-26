@@ -1,6 +1,7 @@
 ﻿using Application.Contracts.Infrastructure;
 using Application.Contracts.Persistence.Auth;
 using Application.DTOs.AuthDtos;
+using Application.DTOs.AuthDtos.Validator;
 using Application.Features.Auth.Requests.Commands;
 using MediatR;
 using System;
@@ -24,6 +25,12 @@ namespace Application.Features.Auth.Handlers.Commands
         }
         public async Task<ReturnDataDto> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
+            var validator = new LoginUserDtoValidator();
+            var validationResult = await validator.ValidateAsync(request.loginUserDto);
+            if (!validationResult.IsValid)
+            {
+                throw new Exception(string.Join(Environment.NewLine, validationResult.Errors.Select(q => q.ErrorMessage)));
+            }
             var user = await _userRepo.FindByEmailAsync(request.loginUserDto.Email)??throw new Exception("Invalid email or password");
             if(!await _userRepo.CheckPasswordAsync(user, request.loginUserDto.Password))
             {

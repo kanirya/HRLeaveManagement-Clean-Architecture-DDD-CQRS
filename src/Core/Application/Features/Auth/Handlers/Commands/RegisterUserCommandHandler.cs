@@ -1,7 +1,9 @@
 ﻿using Application.Contracts.Infrastructure;
 using Application.Contracts.Persistence.Auth;
 using Application.DTOs.AuthDtos;
+using Application.DTOs.AuthDtos.Validator;
 using Application.Features.Auth.Requests.Commands;
+using Application.Responses;
 using Domain.Auth;
 using MediatR;
 using System;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Auth.Handlers.Commands
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommandRequest, ReturnDataDto>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommandRequest, RegisterUserResponses>
     {
         public readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepo;
@@ -24,9 +26,20 @@ namespace Application.Features.Auth.Handlers.Commands
             _refreshRepo=refreshRepo;
         }
 
-        public async Task<ReturnDataDto> Handle(RegisterUserCommandRequest request, CancellationToken cancellationToken)
+        public async Task<RegisterUserResponses> Handle(RegisterUserCommandRequest request, CancellationToken cancellationToken)
         {
-            var role=string.IsNullOrWhiteSpace(request.RegisterUserDto.Role)?"User":request.RegisterUserDto.Role;
+            var validator = new RegisterUserDtoValidator();
+            var response = new RegisterUserResponses();
+            var validationResult = await validator.ValidateAsync(request.RegisterUserDto);
+            if (!validationResult.IsValid)
+            {
+                response.Success=false;
+                response.Message="Creation Failed";
+                response.Errors=validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return response;
+            }
+
+            var role =string.IsNullOrWhiteSpace(request.RegisterUserDto.Role)?"User":request.RegisterUserDto.Role;
             await _userRepo.EnsureRoleExistsAsync(role);
             var domainUser = new User(
                Guid.NewGuid(),
@@ -53,7 +66,17 @@ namespace Application.Features.Auth.Handlers.Commands
                 domainUser.Role,
                 DateTime.UtcNow
                 );
-            return new ReturnDataDto(accessToken, refreshToken.Token, DateTime.UtcNow.AddMinutes(_jwtService.AccessTokenExpirationMinutes), userData);
+            var returnData = new ReturnDataDto(
+                accessToken,
+                refreshToken.Token, 
+                DateTime.UtcNow.AddMinutes(_jwtService.AccessTokenExpirationMinutes),
+                userData
+                );
+            response.Message="User Created Successfully";
+            response.Success=true;
+            response.Data=returnData;
+
+            return response;
         }
     }
 }
