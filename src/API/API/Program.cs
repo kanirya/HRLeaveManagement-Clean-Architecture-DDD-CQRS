@@ -1,8 +1,11 @@
 ﻿using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using Persistence.Identity;
+using System;
 using System.Text;
 
 
@@ -19,6 +22,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 
 // Add CORS

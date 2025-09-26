@@ -3,6 +3,7 @@ using Application.Contracts.Persistence.Auth;
 using Application.DTOs.AuthDtos;
 using Application.DTOs.AuthDtos.Validator;
 using Application.Features.Auth.Requests.Commands;
+using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace Application.Features.Auth.Handlers.Commands
         public readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepo;
         private readonly IRefreshTokenRepository _refreshRepo;
-        public LoginUserCommandHandler(IJwtService jwtService, IUserRepository userRepo, IRefreshTokenRepository refreshRepo)
+        private readonly IMapper _mapper;
+        public LoginUserCommandHandler(IJwtService jwtService, IUserRepository userRepo, IRefreshTokenRepository refreshRepo, IMapper mapper)
         {
             _jwtService=jwtService;
             _userRepo=userRepo;
             _refreshRepo=refreshRepo;
+            _mapper=mapper;
         }
         public async Task<ReturnDataDto> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
@@ -42,13 +45,9 @@ namespace Application.Features.Auth.Handlers.Commands
             refreshToken.UserId=user.Id;
             await _refreshRepo.AddAsync(refreshToken);
             await _refreshRepo.SaveChangesAsync();
-             var userData = new UserDto(
-                user.Name,
-                user.Id,
-                user.Email,
-                user.Role,
-                DateTime.UtcNow
-                );
+            
+             var userData =_mapper.Map<UserDto>(user);
+           
             return new ReturnDataDto(
                 accessToken,
                 refreshToken.Token,

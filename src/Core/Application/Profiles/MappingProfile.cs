@@ -1,8 +1,10 @@
-﻿using Application.DTOs.LeaveAllocation;
+﻿using Application.DTOs.AuthDtos;
+using Application.DTOs.LeaveAllocation;
 using Application.DTOs.LeaveRequest;
 using Application.DTOs.LeaveType;
 using AutoMapper;
 using Domain;
+using Domain.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,9 @@ namespace Application.Profiles
             CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
             CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
             CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
+
+            //auth
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }
