@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class JetService : IJwtService
+    public class JwtService : IJwtService
     {
         private readonly JwtSettings _settings;
 
-        public JetService(IOptions<JwtSettings> settings)
+        public JwtService(IOptions<JwtSettings> settings)
         {
             _settings=settings.Value;
         }

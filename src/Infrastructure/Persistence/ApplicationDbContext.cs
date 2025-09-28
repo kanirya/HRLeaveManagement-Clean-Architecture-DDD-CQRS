@@ -1,7 +1,6 @@
 ﻿using Domain;
 using Domain.Auth;
 using Domain.Common;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +29,7 @@ namespace Persistence
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         protected override  void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
