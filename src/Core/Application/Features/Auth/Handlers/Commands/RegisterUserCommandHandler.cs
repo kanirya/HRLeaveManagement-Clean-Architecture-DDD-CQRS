@@ -61,6 +61,7 @@ namespace Application.Features.Auth.Handlers.Commands
                role
                 );
             var (succeeded, errors)=await _userRepo.CreateAsync(domainUser, request.RegisterUserDto.Password);
+           
             if (!succeeded)
             {
                 throw new Exception(string.Join(Environment.NewLine, errors));
@@ -85,7 +86,7 @@ namespace Application.Features.Auth.Handlers.Commands
                 var returnData = new ReturnDataDto(
                     accessToken,
                     refreshToken.Token,
-                    DateTime.UtcNow.AddMinutes(_jwtService.AccessTokenExpirationMinutes),
+                    refreshToken.Expires,
                     userData
                     );
                 response.Message="User Created Successfully";

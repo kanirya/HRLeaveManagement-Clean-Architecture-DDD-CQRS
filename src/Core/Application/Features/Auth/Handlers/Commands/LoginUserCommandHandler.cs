@@ -44,14 +44,21 @@ namespace Application.Features.Auth.Handlers.Commands
             var refreshToken= _jwtService.GenerateRefreshToken(request.ipAddress);
             refreshToken.UserId=user.Id;
             await _refreshRepo.AddAsync(refreshToken);
+           
             await _refreshRepo.SaveChangesAsync();
             
-             var userData =_mapper.Map<UserDto>(user);
-           
+          
+           var userData = new UserDto(
+                user.Name,
+                user.Id,
+                user.Email,
+                user.Role,
+                DateTime.UtcNow
+                );
             return new ReturnDataDto(
                 accessToken,
                 refreshToken.Token,
-                DateTime.UtcNow.AddMinutes(_jwtService.AccessTokenExpirationMinutes),
+                refreshToken.Expires,
                 userData
                 );  
         }

@@ -34,7 +34,6 @@ namespace Persistence.Repositories.Auth
         {
             var appUser = new ApplicationUser
             {
-                Id = user.Id,
                 UserName = user.Email,
                 Email = user.Email,
                 Name = user.Name
@@ -51,6 +50,7 @@ namespace Persistence.Repositories.Auth
                         return (false, t.Result.Errors.Select(e => e.Description).ToArray());
                     }
                 });
+                   await   _db.SaveChangesAsync();
             var role=string.IsNullOrWhiteSpace(user.Role)?"User":user.Role;
 
             if (!await _roleManager.RoleExistsAsync(role)) await _roleManager.CreateAsync(new ApplicationRole { Name = role });
@@ -58,6 +58,7 @@ namespace Persistence.Repositories.Auth
             await _userManager.AddToRoleAsync(appUser, role);
 
             return (true, Array.Empty<string>());
+
         }
 
         public async Task<bool> CheckPasswordAsync(User user, string password)
