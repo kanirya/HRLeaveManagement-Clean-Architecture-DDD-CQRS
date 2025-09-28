@@ -1,4 +1,6 @@
-﻿using Application.Profiles;
+﻿using Application.Contracts.Infrastructure;
+using Application.Contracts.Persistence.Auth;
+using Application.Profiles;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +18,7 @@ namespace Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+           
 
             return services;
         }
