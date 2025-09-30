@@ -20,7 +20,7 @@ namespace API.Controllers
         {
             _mediator=mediator;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<LeaveRequestDto>>> Get()
         {
