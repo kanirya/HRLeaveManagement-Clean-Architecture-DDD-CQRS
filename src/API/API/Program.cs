@@ -1,4 +1,5 @@
-﻿using Application;
+﻿using API.Middlewares;
+using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -58,7 +59,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-
+app.UseGlobalExceptionMiddleware();
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
