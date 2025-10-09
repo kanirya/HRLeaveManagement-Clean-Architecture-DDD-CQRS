@@ -3,6 +3,7 @@ using Application.Contracts.Persistence.Auth;
 using AutoMapper;
 using Domain.Auth;
 using Microsoft.AspNetCore.Identity;
+using Persistence.data;
 using Persistence.Identity;
 using System;
 using System.Collections.Generic;
