@@ -20,8 +20,10 @@ namespace Infrastructure
     {
        public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings")); 
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            //services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<EmailSettingsSTMP>(configuration.GetSection("EmailSettings"));
+            services.AddTransient<IEmailSender, EmailSenderSTMP>();
             var jwtSettings = configuration.GetSection("Jwt");
             var key = jwtSettings.GetValue<string>("Secret");
             services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
