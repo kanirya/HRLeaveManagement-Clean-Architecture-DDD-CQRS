@@ -27,7 +27,6 @@ namespace Persistence.Repositories.Auth
             return await _context.RefreshTokens.FindAsync(token);
         }
 
-
         public  async Task SaveChangesAsync()
         {
            await  _context.SaveChangesAsync();

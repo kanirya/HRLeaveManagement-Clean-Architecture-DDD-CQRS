@@ -45,6 +45,7 @@ public class GetLeaveTypeListRequestHandlerTests
 
         _mockMapper.Setup(m => m.Map<List<LeaveTypeDto>>(leaveTypes))
                    .Returns(leaveTypeDtos);
+       
 
         // Act
         var result = await _handler.Handle(new GetLeaveTypeListRequest(), CancellationToken.None);
