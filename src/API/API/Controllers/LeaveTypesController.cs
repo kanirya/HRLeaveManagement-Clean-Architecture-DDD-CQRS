@@ -2,6 +2,7 @@
 using Application.Exceptions;
 using Application.Features.LeaveTypes.Requests.Commands;
 using Application.Features.LeaveTypes.Requests.Queries;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class LeaveTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -24,7 +26,7 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [Authorize]
+        [ApiVersion("1.0")]
         public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {
             var leaveType = await _mediator.Send(new GetLeaveTypeListRequest(),cancellationToken);
@@ -34,6 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+        [MapToApiVersion("2.0")]
         public async Task<ActionResult<LeaveTypeDto>> Get(int id)
         {
             var leaveType=await _mediator.Send( new GetLeaveTypeDetailRequest{Id=id});
