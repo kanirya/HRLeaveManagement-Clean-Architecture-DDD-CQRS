@@ -51,13 +51,13 @@ namespace Persistence.Repositories
                     leaveRequest.LeaveType = leaveType;
                     return leaveRequest;
                 },
-                splitOn: "Id" // tells Dapper where LeaveType starts
+                splitOn: "Id" 
             );
 
             return result.ToList();
         }
 
-        // ✅ 2. Get single leave request with details
+        // 2. Get single leave request with details
         public async Task<LeaveRequest> GetLeaveRequestWithDetails(int id)
         {
             var query = @"
