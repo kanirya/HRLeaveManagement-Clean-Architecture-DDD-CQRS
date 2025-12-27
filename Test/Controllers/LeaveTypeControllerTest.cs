@@ -4,7 +4,6 @@ using Application.Features.LeaveTypes.Requests.Queries;
 using Application.Persistence.Contracts;
 using AutoMapper;
 using Domain;
-using FakeItEasy;
 using FluentAssertions;
 using Moq;
 
