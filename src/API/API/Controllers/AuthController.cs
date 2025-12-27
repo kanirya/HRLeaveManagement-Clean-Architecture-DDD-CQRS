@@ -14,10 +14,11 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
-
-        public AuthController(IMediator mediator)
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IMediator mediator, ILogger<AuthController> logger)
         {
             _mediator=mediator;
+            _logger=logger;
         }
 
         [HttpPost]
@@ -26,6 +27,7 @@ namespace API.Controllers
             try
             {
 
+                _logger.LogInformation("Login endpoint is hit with userName: {username} with pass {pass}",loginDto.Email,loginDto.Password);
                 var Request = new LoginUserCommandRequest
                 {
                     ipAddress=HttpContext.Connection.RemoteIpAddress.ToString(),
