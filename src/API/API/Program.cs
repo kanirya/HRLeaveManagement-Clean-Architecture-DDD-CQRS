@@ -16,6 +16,10 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+//redis 
+builder.AddRedisOutputCache("cache");
+
+
 
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
@@ -82,10 +86,10 @@ if (app.Environment.IsDevelopment())
         }
     });   
 }
-
+app.UseOutputCache();
 
 app.UseGlobalExceptionMiddleware();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
