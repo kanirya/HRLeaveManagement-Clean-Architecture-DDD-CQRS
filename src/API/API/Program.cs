@@ -1,4 +1,4 @@
-﻿using API.Middlewares;
+using API.Middlewares;
 using Application;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
@@ -15,11 +15,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.ConfigurePersistenceServices(builder.Configuration);
 
-// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -67,9 +68,11 @@ builder.Services.AddApiVersioning(options=>
 
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();     // ✅ Swagger middleware
+    app.UseSwagger();    
     app.UseSwaggerUI(o =>
     {
         var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
@@ -77,12 +80,12 @@ if (app.Environment.IsDevelopment())
         {
             o.SwaggerEndpoint($"/swagger/{d.GroupName}/swagger.json", d.GroupName.ToUpperInvariant());
         }
-    });   // ✅ Swagger UI middleware
+    });   
 }
 
 
 app.UseGlobalExceptionMiddleware();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 

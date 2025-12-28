@@ -17,6 +17,7 @@ namespace API.Controllers.test
         }
         [HttpGet("test-error")]
         public IActionResult TestError()
+
         {
             throw new Exception("Something went wrong!");
         }
