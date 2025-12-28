@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence
+namespace Persistence.data
 {
     public class ApplicationDbContext:IdentityDbContext<ApplicationUser, ApplicationRole, Guid>    
     {
