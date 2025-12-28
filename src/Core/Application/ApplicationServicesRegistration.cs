@@ -1,6 +1,8 @@
-﻿using Application.Contracts.Infrastructure;
+﻿using Application.Common.Behaviours;
+using Application.Contracts.Infrastructure;
 using Application.Contracts.Persistence.Auth;
 using Application.Profiles;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +20,12 @@ namespace Application
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
-           
+            // Register all FluentValidators automatically
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            // Register MediatR Pipeline Behavior
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
 
             return services;
         }
