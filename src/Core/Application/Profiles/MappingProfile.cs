@@ -22,6 +22,7 @@ namespace Application.Profiles
             CreateMap<LeaveType, CreateLeaveTypeDto>().ReverseMap();
 
             CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
+            CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
         }
     }
 }
