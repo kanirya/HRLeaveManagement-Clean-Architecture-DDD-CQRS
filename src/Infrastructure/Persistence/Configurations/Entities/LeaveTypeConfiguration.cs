@@ -16,7 +16,7 @@ namespace Persistence.Configurations.Entities
             builder.HasData(
                 new LeaveType
                 {
-                    Id = 1,
+                    Id = 4,
                     Name = "Vacation",
                     DefaultDays = 10,
                    
@@ -24,7 +24,7 @@ namespace Persistence.Configurations.Entities
                 },
                 new LeaveType
                 {
-                    Id = 2,
+                    Id = 5,
                     Name = "Sick",
                     DefaultDays = 12,
 
@@ -32,7 +32,7 @@ namespace Persistence.Configurations.Entities
                 },
                 new LeaveType
                 {
-                    Id = 3,
+                    Id = 6,
                     Name = "Unpaid",
                     DefaultDays = 20,
                 }
