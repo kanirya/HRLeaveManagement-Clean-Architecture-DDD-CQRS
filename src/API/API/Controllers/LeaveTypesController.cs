@@ -6,6 +6,7 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -26,6 +27,7 @@ namespace API.Controllers
 
 
         [HttpGet]
+        [OutputCache]
         //[MapToApiVersion("1.0")] if there is no MapToApiVersion Allot to any action method this will work on every version
         public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {

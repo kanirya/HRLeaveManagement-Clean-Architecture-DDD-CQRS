@@ -3,12 +3,14 @@ using Application.Features.Auth.Requests.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Identity.Client;
 
 namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [OutputCache]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
