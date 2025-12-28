@@ -2,6 +2,7 @@
 using Application.Models;
 
 using Infrastructure.Mail;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +61,7 @@ namespace Infrastructure
                     }
                 };
             });
+            services.AddScoped<IJwtService, JwtService>();
             services.AddAuthorization();
             return services;
         }
