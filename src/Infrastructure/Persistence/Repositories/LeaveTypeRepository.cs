@@ -24,7 +24,7 @@ namespace Persistence.Repositories
         {
 
             return await _dbContext.LeaveTypes
-        .FromSqlRaw("WAITFOR DELAY '00:00:05'; SELECT * FROM LeaveTypes")
+        .FromSqlRaw("SELECT * FROM LeaveTypes")
         .ToListAsync(ct);
 
         }

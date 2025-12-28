@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.LeaveAllocation;
 using Application.Features.LeaveAllocation.Requests.Commands;
 using Application.Features.LeaveAllocation.Requests.Queries;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class LeaveAllocationController : ControllerBase
     {

@@ -26,9 +26,10 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [ApiVersion("1.0")]
+        //[MapToApiVersion("1.0")] if there is no MapToApiVersion Allot to any action method this will work on every version
         public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {
+            Response.Headers.Add("Warning", "299 - 'API version 1.0 is deprecated, please migrate to 2.0'");
             var leaveType = await _mediator.Send(new GetLeaveTypeListRequest(),cancellationToken);
 
             return Ok(leaveType);
@@ -45,6 +46,7 @@ namespace API.Controllers
 
 
         [HttpPost]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult> Post([FromBody] CreateLeaveTypeDto leaveTypeDto)
         {
             var command = new CreateLeaveTypeCommand { LeaveTypeDto=leaveTypeDto };
@@ -53,6 +55,7 @@ namespace API.Controllers
         }
 
         [HttpPut]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult> Put( [FromBody] LeaveTypeDto leaveTypeDto)
         {
             try
@@ -73,6 +76,7 @@ namespace API.Controllers
 
 
         [HttpDelete("{id}")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> Delete(int id)
         {
             try
