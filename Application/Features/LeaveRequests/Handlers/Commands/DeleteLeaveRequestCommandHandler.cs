@@ -1,4 +1,5 @@
-﻿using Application.Features.LeaveRequests.Requests.Commands;
+﻿using Application.Exceptions;
+using Application.Features.LeaveRequests.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
 using MediatR;
@@ -26,7 +27,7 @@ namespace Application.Features.LeaveRequests.Handlers.Commands
            var leaveRequest=await _leaveRequestRepository.Get(request.Id);
             if (leaveRequest==null)
             {
-                throw new Exception($"Leave request with id {request.Id} not found.");
+                throw new NotFoundException(nameof(leaveRequest),request.Id);
             }
             await _leaveRequestRepository.Delete(leaveRequest);
             return Unit.Value;
