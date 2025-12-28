@@ -17,6 +17,8 @@ namespace Application.DTOs.LeaveRequest.Validators
 
             Include(new ILeaveRequestDtoValidator(_leaveTypeRepository));
 
-           }
+            RuleFor(q => q.Id)
+                .NotNull().WithMessage("{PropertyName} is required.");
+        }
     }
 }

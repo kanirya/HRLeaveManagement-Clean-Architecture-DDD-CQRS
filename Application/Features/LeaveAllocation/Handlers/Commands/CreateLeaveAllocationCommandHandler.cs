@@ -1,6 +1,8 @@
-﻿using Application.Features.LeaveAllocation.Requests.Commands;
+﻿using Application.DTOs.LeaveAllocation.Validators;
+using Application.Features.LeaveAllocation.Requests.Commands;
 using Application.Persistence.Contracts;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -14,15 +16,27 @@ namespace Application.Features.LeaveAllocation.Handlers.Commands
     {
           private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly IMapper _mapper;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public CreateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository, IMapper mapper)
+        
+
+        public CreateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository, ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
         {
             _leaveAllocationRepository=leaveAllocationRepository;
             _mapper=mapper;
+
+            _leaveTypeRepository=leaveTypeRepository;
         }
         public async Task<int> Handle(CreateLeaveAllocationCommand request, CancellationToken cancellationToken)
-        {
-            var leaveAllocation = _mapper.Map<Domain.LeaveAllocation>(request.LeaveAllocationDto);
+        { 
+
+            var validator = new CreateLeaveAllocationDtoValidator(_leaveTypeRepository);
+
+            var validationResult = await validator.ValidateAsync(request.CreateLeaveAllocationDto);
+            if(!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
+
+            var leaveAllocation = _mapper.Map<Domain.LeaveAllocation>(request.CreateLeaveAllocationDto);
             leaveAllocation = await _leaveAllocationRepository.Add(leaveAllocation);
             return leaveAllocation.Id;
         }

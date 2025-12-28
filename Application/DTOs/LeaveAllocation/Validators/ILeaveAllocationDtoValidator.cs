@@ -15,8 +15,10 @@ namespace Application.DTOs.LeaveAllocation.Validators
         public ILeaveAllocationDtoValidator(ILeaveTypeRepository leaveTypeRepository)
         {
             _leaveTypeRepository=leaveTypeRepository;
+
            RuleFor(p=>p.NumberOfDays).NotNull().NotEmpty().WithMessage("{PropertyName} is Required")
-                .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0");
+                .GreaterThan(0).WithMessage("{PropertyName} must be greater than {ComparisonValue}");
+
             RuleFor(p => p.LeaveTypeId)
               .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0.")
               .MustAsync(async (id, token) =>
