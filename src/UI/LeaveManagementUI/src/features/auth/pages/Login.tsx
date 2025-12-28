@@ -15,7 +15,6 @@ type Errors = {
 
 export function Login() {
     const navigate = useNavigate();
-
     const [form, setForm] = useState<FormState>({ email: "", password: "" });
     const [errors, setErrors] = useState<Errors>({});
     const [isLoading, setIsLoading] = useState(false);
