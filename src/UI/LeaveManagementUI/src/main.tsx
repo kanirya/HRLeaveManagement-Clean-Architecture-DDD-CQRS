@@ -1,19 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
+
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Layout from "./Layout.tsx"
 import {Login} from "./features/auth/pages/Login.tsx";
 import Register from "./features/auth/pages/Register.tsx";
+import LandingPage from "./features/admin/pages/LandingPage.tsx";
+import Page from "./features/admin/pages/LandingPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Layout />,
+        element: <Page />,
         // errorElement: <GlobalErrorPage />,
         children: [
-            { index: true, element: <App /> },
+            { index: true, element: <Page /> },
             { path: "/login", element: <Login /> },
             { path: "/register", element: <Register /> },
             // {
