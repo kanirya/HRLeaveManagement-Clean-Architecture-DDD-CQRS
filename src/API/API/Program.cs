@@ -25,9 +25,14 @@ builder.Logging.AddConsole();
 builder.Services.AddHttpContextAccessor();
 
 
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+//builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();   // This will not work, it will return 404 on every request
+builder.Services.AddIdentityCore<ApplicationUser>()
+    .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
 
 
 // Add CORS
@@ -58,10 +63,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
-app.UseAuthorization();
+
 app.UseAuthentication();
 
-
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
