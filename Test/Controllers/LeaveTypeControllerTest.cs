@@ -61,7 +61,7 @@ public class GetLeaveTypeListRequestHandlerTests
     }
 
     [Fact]
-    public async Task LeaveType_GetLeaveTypeDetail_ShouldReturnMappedLeaveType()
+    public async Task Handle_ShouldReturnMappedLeaveTypeDetail_WhenCalledWithValidId()
     {
         // Arrange
         var leaveType = new LeaveType { Id = 1, Name = "Annual", DefaultDays = 10 };
