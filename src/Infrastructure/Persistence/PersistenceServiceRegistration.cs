@@ -29,6 +29,9 @@ namespace Persistence
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+           
+
+
             return services;
         }
     }
