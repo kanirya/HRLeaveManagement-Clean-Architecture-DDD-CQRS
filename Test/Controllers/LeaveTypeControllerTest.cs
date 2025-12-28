@@ -5,6 +5,7 @@ using Application.Persistence.Contracts;
 using AutoMapper;
 using Domain;
 using FakeItEasy;
+using FluentAssertions;
 using Moq;
 
 public class GetLeaveTypeListRequestHandlerTests
@@ -12,13 +13,15 @@ public class GetLeaveTypeListRequestHandlerTests
     private readonly Mock<ILeaveTypeRepository> _mockRepo;
     private readonly Mock<IMapper> _mockMapper;
     private readonly GetLeaveTypeListRequestHandler _handler;
-
+    private readonly GetLeaveTypeDetailRequestHandler _leaveTypeDetialHandler;
     public GetLeaveTypeListRequestHandlerTests()
     {
         _mockRepo = new Mock<ILeaveTypeRepository>();
         _mockMapper = new Mock<IMapper>();
-
+        
         _handler = new GetLeaveTypeListRequestHandler(_mockRepo.Object, _mockMapper.Object);
+
+        _leaveTypeDetialHandler=new GetLeaveTypeDetailRequestHandler(_mockRepo.Object,_mockMapper.Object);
     }
 
     [Fact]
@@ -47,11 +50,32 @@ public class GetLeaveTypeListRequestHandlerTests
         var result = await _handler.Handle(new GetLeaveTypeListRequest(), CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(2, result.Count);
-        Assert.Equal("Annual", result[0].Name);
+        result.Should().NotBeNull();
+        
+       result.Should().HaveCount(2);
+        result[0].Name.Should().Be("Annual");
+
 
         _mockRepo.Verify(r => r.GetLeaveTypesListWithDetails(It.IsAny<CancellationToken>()), Moq.Times.Once);
         _mockMapper.Verify(m => m.Map<List<LeaveTypeDto>>(leaveTypes), Moq.Times.Once);
+    }
+
+    [Fact]
+    public async Task LeaveType_GetLeaveTypeDetail_ShouldReturnMappedLeaveType()
+    {
+        // Arrange
+        var leaveType = new LeaveType { Id = 1, Name = "Annual", DefaultDays = 10 };
+        var leaveTypeDto = new LeaveTypeDto { Id = 1, Name = "Annual", DefaultDays = 10 };
+        _mockRepo.Setup(r => r.GetLeaveTypeWithDetails(It.IsAny<int>()))
+                 .ReturnsAsync(leaveType);
+        _mockMapper.Setup(m => m.Map<LeaveTypeDto>(leaveType))
+                   .Returns(leaveTypeDto);
+
+        // Act
+        var result = await _leaveTypeDetialHandler.Handle(new GetLeaveTypeDetailRequest { Id = 1 }, CancellationToken.None);
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be("Annual");
+        _mockRepo.Verify(r => r.GetLeaveTypeWithDetails(It.IsAny<int>()), Moq.Times.Once);
     }
 }
