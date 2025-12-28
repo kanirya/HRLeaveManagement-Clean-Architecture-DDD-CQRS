@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.LeaveAllocation;
 using Application.Features.LeaveAllocation.Requests.Queries;
 using Application.Persistence.Contracts;
 using AutoMapper;
