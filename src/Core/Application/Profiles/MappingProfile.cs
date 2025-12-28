@@ -33,7 +33,7 @@ namespace Application.Profiles
             CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
 
             //auth
-            CreateMap<User, UserDto>().ReverseMap();
+            //CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }
