@@ -3,11 +3,13 @@ using Application.Exceptions;
 using Application.Features.LeaveTypes.Requests.Commands;
 using Application.Features.LeaveTypes.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class LeaveTypesController : ControllerBase
@@ -22,7 +24,7 @@ namespace API.Controllers
 
 
         [HttpGet]
-        
+        [Authorize]
         public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {
             var leaveType = await _mediator.Send(new GetLeaveTypeListRequest(),cancellationToken);

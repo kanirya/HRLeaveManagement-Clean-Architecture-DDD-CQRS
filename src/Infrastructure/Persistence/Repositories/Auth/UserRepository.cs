@@ -28,8 +28,6 @@ namespace Persistence.Repositories.Auth
             _db = db;
             _mapper=mapper;
         }
-
-
         public async Task<(bool Succeeded, string[] Errors)> CreateAsync(User user, string password)
         {
             var appUser = new ApplicationUser

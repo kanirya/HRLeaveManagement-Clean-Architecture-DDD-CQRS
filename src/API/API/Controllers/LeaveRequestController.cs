@@ -2,6 +2,7 @@
 using Application.Features.LeaveRequests.Requests.Commands;
 using Application.Features.LeaveRequests.Requests.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
