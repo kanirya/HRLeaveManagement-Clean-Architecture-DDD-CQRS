@@ -24,6 +24,7 @@ namespace Infrastructure
             services.AddTransient<IEmailSender, EmailSender>();
             var jwtSettings = configuration.GetSection("Jwt");
             var key = jwtSettings.GetValue<string>("Secret");
+            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             if (string.IsNullOrEmpty(key))
                 throw new Exception("JWT Secret is missing in appsettings.json");

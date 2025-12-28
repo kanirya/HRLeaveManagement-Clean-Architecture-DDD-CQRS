@@ -55,6 +55,9 @@ namespace Infrastructure.Services
             var randomBytes=new byte[64];
             using var rng = System.Security.Cryptography.RandomNumberGenerator.Create();
             rng.GetBytes(randomBytes);
+            Console.WriteLine($"RefreshTokenExpirationDays: {_settings.RefreshTokenExpirationDays}");
+            Console.WriteLine($"Expires: {DateTime.UtcNow.AddDays(_settings.RefreshTokenExpirationDays)}");
+
             return new RefreshToken
             {
                 Token = Convert.ToBase64String(randomBytes),
