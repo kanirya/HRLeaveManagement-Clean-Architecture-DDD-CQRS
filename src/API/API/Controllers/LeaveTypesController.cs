@@ -18,10 +18,12 @@ namespace API.Controllers
     public class LeaveTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<LeaveTypesController> logger;
 
-        public LeaveTypesController(IMediator mediator)
+        public LeaveTypesController(IMediator mediator, ILogger<LeaveTypesController> logger)
         {
             _mediator=mediator;
+            this.logger=logger;
         }
 
 
@@ -31,6 +33,7 @@ namespace API.Controllers
         //[MapToApiVersion("1.0")] if there is no MapToApiVersion Allot to any action method this will work on every version
         public async Task<ActionResult<List<LeaveTypeDto>>> Get(CancellationToken cancellationToken)
         {
+            logger.LogWarning("This is just for testing purpose");
             Response.Headers.Add("Warning", "299 - 'API version 1.0 is deprecated, please migrate to 2.0'");
             var leaveType = await _mediator.Send(new GetLeaveTypeListRequest(),cancellationToken);
 
