@@ -1,34 +1,46 @@
+﻿using Application;
+using Infrastructure;
+using Persistence;
 
-namespace API
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureInfrastructureServices(builder.Configuration);
+builder.Services.ConfigurePersistenceServices(builder.Configuration);
+
+// Add services
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+
+
+// Add CORS
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", corsBuilder =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    corsBuilder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
 
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
-        }
-    }
+var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();     // ✅ Swagger middleware
+    app.UseSwaggerUI();   // ✅ Swagger UI middleware
 }
+
+
+
+app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
