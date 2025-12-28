@@ -20,13 +20,15 @@ namespace Application.Profiles
             CreateMap<LeaveRequest, LeaveRequestListDto>().ReverseMap();
 
             CreateMap<LeaveRequest, UpdateLeaveRequestDto>().ReverseMap();
-
+            CreateMap<LeaveRequest, CreateLeaveRequestDto>().ReverseMap();
+            
 
             CreateMap<LeaveType, LeaveTypeDto>().ReverseMap();
             CreateMap<LeaveType, CreateLeaveTypeDto>().ReverseMap();
 
             CreateMap<LeaveAllocation, LeaveAllocationDto>().ReverseMap();
             CreateMap<LeaveAllocation, CreateLeaveAllocationDto>().ReverseMap();
+            CreateMap<LeaveAllocation, UpdateLeaveAllocationDto>().ReverseMap();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Application.Features.LeaveAllocation.Handlers.Commands
             var leaveAllocation = await _leaveAllocationRepository.Get(request.UpdateLeaveAllocationDto.Id);
             if (leaveAllocation==null)
             {
-                throw new Exception($"Leave allocation with id {request.UpdateLeaveAllocationDto.Id} not found.");
+                throw new NotFoundException(nameof(leaveAllocation), leaveAllocation.Id);
             }
             _mapper.Map(request.UpdateLeaveAllocationDto, leaveAllocation);
             await _leaveAllocationRepository.Update(leaveAllocation);
