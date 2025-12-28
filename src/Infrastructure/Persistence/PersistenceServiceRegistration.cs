@@ -3,6 +3,7 @@ using Application.Persistence.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Identity;
 using Persistence.Repositories;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace Persistence
                      configuration.GetConnectionString("DefaultConnection"),
                      b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
                  ));
+          
 
             services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
             services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
