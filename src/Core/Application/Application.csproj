@@ -17,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Auth\Handlers\Commands\" />
     <Folder Include="Features\Auth\Handlers\Queries\" />
-    <Folder Include="Features\Auth\Requests\Commands\" />
     <Folder Include="Features\Auth\Requests\Queries\" />
   </ItemGroup>
 
