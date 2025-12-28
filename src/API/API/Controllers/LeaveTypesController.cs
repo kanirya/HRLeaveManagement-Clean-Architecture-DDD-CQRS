@@ -12,7 +12,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
+    [ApiVersion("1.0",Deprecated =true)]
     [ApiVersion("2.0")]
     public class LeaveTypesController : ControllerBase
     {
@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        [MapToApiVersion("2.0")]
+        [MapToApiVersion("1.0")]
         public async Task<ActionResult<LeaveTypeDto>> Get(int id)
         {
             var leaveType=await _mediator.Send( new GetLeaveTypeDetailRequest{Id=id});
