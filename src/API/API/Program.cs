@@ -1,6 +1,9 @@
 ﻿using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +30,13 @@ builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", corsBuilder =>
         .AllowAnyHeader();
 }));
 
+
+
+
+
+
+
+
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
@@ -40,6 +50,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
