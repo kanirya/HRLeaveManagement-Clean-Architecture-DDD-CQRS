@@ -8,10 +8,12 @@ var cache = builder.AddRedis("cache").WithRedisCommander();
 //    options.Password = "Strong!Pass123";   // password
 //    options.Port = 1433;                   // optional, default SQL port
 //});
+var sql = builder.AddSqlServer("DESKTOP-DFLU7SE").AddDatabase("LeaveManagement");
+
 
 builder.AddProject<Projects.API>("api")
-    .WithReference(cache)
-    //.WithReference(sqlServer)
-    ;
+    .WithReference(cache).WithReference(sql);
+
+
 
 builder.Build().Run();

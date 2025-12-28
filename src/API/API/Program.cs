@@ -5,7 +5,6 @@ using Asp.Versioning.ApiExplorer;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Persistence.data;
@@ -20,7 +19,7 @@ builder.AddServiceDefaults();
 //redis 
 builder.AddRedisOutputCache("cache");
 
-
+builder.AddSqlServerDbContext<ApplicationDbContext>("LeaveManagement");
 
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureServices(builder.Configuration);
@@ -75,22 +74,7 @@ builder.Services.AddApiVersioning(options=>
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    try
-    {
-        db.Database.Migrate();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("Database migrations applied successfully.");
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error applying migrations");
-        throw;
-    }
-}
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -115,5 +99,11 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.EnsureCreated();
+}
+
 
 app.Run();

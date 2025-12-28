@@ -20,12 +20,13 @@ namespace Persistence
     {
         public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services,IConfiguration configuration)
         {
+            
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                 options.UseSqlServer(
-                     configuration.GetConnectionString("DefaultConnection"),
-                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-                 ));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseSqlServer(
+            //         configuration.GetConnectionString("DefaultConnection"),
+            //         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+            //     ));
             services.AddSingleton<DapperContext>();//dapper support
 
 
