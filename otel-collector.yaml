@@ -1,0 +1,18 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  awscloudwatchlogs:
+    log_group_name: "/aspire/api"
+    log_stream_name: "api-{instance_id}"
+    region: "us-east-1"
+    endpoint: "http://localstack:4566"
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      exporters: [awscloudwatchlogs]

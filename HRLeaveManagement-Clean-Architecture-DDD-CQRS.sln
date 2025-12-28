@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -30,6 +30,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRLeaveManagement-Clean-Architecture-DDD-CQRS.AppHost", "HRLeaveManagement-Clean-Architecture-DDD-CQRS.AppHost\HRLeaveManagement-Clean-Architecture-DDD-CQRS.AppHost.csproj", "{CC4EF10E-AB97-4F0A-9423-79DFCF55C0AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRLeaveManagement-Clean-Architecture-DDD-CQRS.ServiceDefaults", "HRLeaveManagement-Clean-Architecture-DDD-CQRS.ServiceDefaults\HRLeaveManagement-Clean-Architecture-DDD-CQRS.ServiceDefaults.csproj", "{92A6EDEE-CFAA-84B9-4CFB-F5DF0A665355}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{599B91DB-724C-478A-BE1F-2D3335BF64EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otel", "otel", "{6730028E-E333-4B68-94D1-3BAECE65BEA4}"
+	ProjectSection(SolutionItems) = preProject
+		otel-collector.yaml = otel-collector.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{0E9E5109-5DF1-4B9A-B88E-900205D8B40E}"
+	ProjectSection(SolutionItems) = preProject
+		main.tf = main.tf
+		variables.tf = variables.tf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +97,7 @@ Global
 		{959AE87E-A8A2-4DB2-A84A-B9EEE81350AC} = {CDE9C2ED-BC64-47B0-90CD-6A1F20E53AB2}
 		{A48ED964-F8F3-44AD-B6F0-9668C613FFE8} = {A699A35C-B4B1-4156-B7AC-E0D9711069F2}
 		{226F9DCA-2192-4F12-912E-D127D4334769} = {B3971BD1-4BDC-465A-8798-9B4B78D1B0DE}
+		{0E9E5109-5DF1-4B9A-B88E-900205D8B40E} = {599B91DB-724C-478A-BE1F-2D3335BF64EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D41E850-F7FB-487B-A70E-7DD81E8B4BBA}
