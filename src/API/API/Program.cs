@@ -1,5 +1,7 @@
 ﻿using API.Middlewares;
 using Application;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -45,7 +47,18 @@ builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", corsBuilder =>
         .AllowAnyHeader();
 }));
 
-
+builder.Services.AddApiVersioning(options=>
+{
+    options.AssumeDefaultVersionWhenUnspecified=true;
+    options.DefaultApiVersion=new ApiVersion(1,0);
+    options.ApiVersionReader=new UrlSegmentApiVersionReader();
+})
+    .AddMvc()
+    .AddApiExplorer(options =>
+{
+    options.GroupNameFormat="'v'V";
+    options.SubstituteApiVersionInUrl=true;
+});
 
 
 
@@ -56,7 +69,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();     // ✅ Swagger middleware
-    app.UseSwaggerUI();   // ✅ Swagger UI middleware
+    app.UseSwaggerUI(o =>
+    {
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+        foreach (var d in provider.ApiVersionDescriptions)
+        {
+            o.SwaggerEndpoint($"/swagger/{d.GroupName}/swagger.json", d.GroupName.ToUpperInvariant());
+        }
+    });   // ✅ Swagger UI middleware
 }
 
 
